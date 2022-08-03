@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Active Listings</h2>
+<div class="listings"></div>
+{% for listing in listings %}
+{% if listing.active %}
+<a class="listing_click" href="{% url 'listing' listing.id %}">
+    <div class="listing">
+        <img class="listing_image" src="{{ listing.image_url }}" alt="Image">
+        <div class="listing_info">
+            <p class="listing_title">{{listing.title}}</p>
+            <p class="listing_description">{{listing.description}}</p>
+            <p class="pricedemand">Price Demanded: ${{listing.desired_price}}</p>
+            <p class="highestbid">Highest Bid: ${{listing.highest_bid}}</p>
+            <p class="viewmore">Click to view more</p>
+        </div>
+    </div>
+</a>
+{% endif %}
+{% endfor %}
+</div>
+{% endblock %}

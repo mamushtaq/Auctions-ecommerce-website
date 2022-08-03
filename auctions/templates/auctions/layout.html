@@ -1,0 +1,286 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}Auctions{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    <style>
+        body {
+            padding: 10px;
+            font-size: 14px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            color: #333;
+            width: 1080px;
+            margin: 20px auto 0 auto;
+            padding: 0 20px 20px 20px;
+        }
+
+        main {
+            margin: 20px auto 0 auto;
+            padding: 0 20px 20px 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+            color: #333;
+            padding: 0 20px;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .navigation {
+            color: #333;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 5px 10px;
+        }
+
+
+        .listing {
+            display: block;
+            float: left;
+            width: 300px;
+            border: 2px solid #333;
+            margin: 10px;
+            padding: 0 20px 20px 20px;
+        }
+
+        .listing:hover {
+            color: #fff;
+            background-color: #333;
+            cursor: pointer;
+        }
+
+        .listing_image {
+            margin-top: 20px;
+            width: auto;
+            height: 190px;
+        }
+
+        .listing_title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            letter-spacing: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+
+        .listing_description {
+            font-weight: 400;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .pricedemand {
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .highestbid {
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0px;
+        }
+
+        .listing_click {
+            all: unset;
+        }
+
+        .listing_click:hover {
+            all: unset;
+        }
+
+        .viewmore {
+            font-size: 10px;
+            font-weight: 300;
+            margin: 0;
+            padding: 0;
+        }
+
+        .listing_details {
+            width: 70%;
+            float: left;
+            margin-bottom: 50px;
+        }
+
+        .listing_img {
+            max-width: 100%;
+            max-height: 300px;
+        }
+
+        .create_bid {
+            width: 30%;
+            float: right;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .price_heading {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: brown;
+            margin-right: 50px;
+        }
+
+        .listing_comments {
+            margin: 20px 0px;
+
+        }
+
+        .comment_form {
+            all: unset;
+            width: 80%;
+        }
+
+        .comment_form:focus {
+            all: unset;
+            width: 80%;
+            border-bottom: 1px solid #000;
+            padding: 5px;
+        }
+
+        .comment_user {
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .comment {
+            width: 100%;
+            background-color: lightgray;
+            color: #000;
+            margin: 20px 0px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .button {
+            all: unset;
+            color: #fff;
+            background-color: #333;
+            padding: 13px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .button:hover,
+        #added_to_watchlist:hover {
+            all: unset;
+            color: #fff;
+            background-color: #333;
+            padding: 15px 22px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+
+        #added_to_watchlist {
+            all: unset;
+            color: #333;
+            border: 2px solid #333;
+            border-radius: 5px;
+            padding: 13px 20px;
+            border-radius: 5px;
+            float: right;
+        }
+
+        .Congrats,
+        .lost {
+            color: white;
+            background-color: green;
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            padding: 5px;
+        }
+
+        .lost {
+            background-color: red;
+        }
+
+        .listing_closed {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .categories {
+            all: unset;
+            color: #333;
+            border-radius: 5px;
+            padding: 13px 20px;
+            border-radius: 5px;
+            margin-left: 20px;
+            float: left;
+        }
+
+        .categories:hover {
+            color: red;
+            float: left;
+            cursor: pointer;
+        }
+
+        .selection {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Auctions</h1>
+        <nav>
+            <a class="navigation" href="{% url 'index' %}">Active Listings</a>
+            <a class="navigation" href="{% url 'categories' %}">Categories</a>
+            {% if user.is_authenticated %}
+            <a class="navigation" href="{% url 'createlisting' %}">Create Listing</a>
+            <a class="navigation" href="{% url 'logout' %}">Log Out</a>
+            <a class="navigation" href="{% url 'watchlist' %}">My Watchlist</a>
+            {% else %}
+            <a class="navigation" href="{% url 'login' %}">Log In</a>
+            <a class="navigation" href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+        <div>
+            {% if user.is_authenticated %}
+            Signed in as <strong>{{ user.username }}</strong>.
+            {% else %}
+            Not signed in.
+            {% endif %}
+        </div>
+    </header>
+    <main>
+        <hr>
+        {% block body %}
+        {% endblock %}
+    </main>
+</body>
+
+</html>

@@ -1,2 +1,3 @@
 # Auctions-ecommerce-website
-Auctions is an ecommerce website like ebay which allows the user to log in, create listings, and bid on them.
+
+Auctions is an eBay-like e-commerce auction site that will allow users to post auction listings, place bids on listings, comment on those listings, and add listings to a “watchlist.”

@@ -1,0 +1,79 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+{% if message %}
+Error: Does not Exist
+{% else %}
+{{listing.title}}
+{% endif %}
+{% endblock %}
+
+{% block body %}
+{% if message %}
+<h1>{{message}}</h1>
+{% else %}
+{% if listing.active == False %}
+<h2 class="listing_closed">This Listing has been Closed</h2>
+{% if user.is_authenticated %}
+{% if user.username == listing.bid.user %}
+<h1 class="Congrats">Congratulations you have won the auction</h1>
+{% else %}
+<h1 class="lost">You could not win the auction. Try again next time</h1>
+{%endif%}
+{%endif%}
+{%endif%}
+
+<div class="listing_details">
+    <img src="{{listing.image_url}}" class="listing_img" alt="Listing Image">
+    <div class="listing_desc">
+        <h2>{{listing.title}}</h2>
+        <p class="posted_by">Posted by {{listing.users}}</p>
+        <p class="posted_by">Category : {{listing.category.title}}</p>
+        <p>{{listing.description}}</p>
+        <div>
+            <span class="price_heading">Desired Price: </span><span class="price">${{listing.desired_price}}</span>
+            <span class="price_heading">Highest Bid: </span><span class="price">${{listing.highest_bid}}</span>
+        </div>
+    </div>
+</div>
+<div class="create_bid">
+    {% if listing.users != user.username and listing.active %}
+    <h4>Bid on {{listing.title}}</h4>
+    <p class="error">{% if bid_message %}{{bid_message}}{% endif %}</p>
+    <p class="error">{% if wishlist_message %}{{wishlist_message}}{% endif %}</p>
+    <form action="{% url 'createbid' listing.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input autofocus class="form-control" type="number" name="Bid_Price" placeholder="Bid Price">
+        </div>
+        <input class="button" style="float: left;" type="submit" value="Create">
+        {% if addedtowatchlist %}
+        <a class="button" id="added_to_watchlist" href="{% url 'removefromwatchlist' listing.id %}">Added to
+            watchlist</a>
+        {% else %}
+        <a class="button" href="{% url 'addtowishlist' listing.id %}">Add to watchlist</a>
+        {% endif %}
+    </form>
+    {% elif listing.users == user.username %}
+    <a class="button" href="{% url 'closelisting' listing.id %}">Close Listing</a>
+    {% endif %}
+</div>
+<div class="listing_comments">
+    <form action="{% url 'comment' listing.id %}" method="post">
+        {% csrf_token %}
+        <input autofocus class="form-control comment_form" type="text" name="comment" placeholder="Write a comment">
+        <input class="btn btn-primary" type="submit" value="Comment">
+    </form>
+    {% if comment_message %}
+    <p class="error">{{comment_message}}</p>
+    {% endif %}
+    {% for comment in comments %}
+    {% if comment.listing == listing.id %}
+    <div class="comment">
+        <span class="comment_user">{{comment.user}}:</span> <span class="commented_line">{{comment.comment}}</span>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
